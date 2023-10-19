@@ -11,35 +11,6 @@ class PointController extends BaseController
 		$this->db = \Config\Database::connect();
 		$this->points = new PointModel();
 	}
-	/**
-	 * Return an array of resource objects, themselves in array format
-	 *
-	 * @return mixed
-	 */
-	public function index()
-	{
-		//
-	}
-
-	/**
-	 * Return the properties of a resource object
-	 *
-	 * @return mixed
-	 */
-	public function show($id = null)
-	{
-		//
-	}
-
-	/**
-	 * Return a new resource object, with default properties
-	 *
-	 * @return mixed
-	 */
-	public function new()
-	{
-		//
-	}
 
 	/**
 	 * Create a new resource object, from "posted" parameters
@@ -71,7 +42,7 @@ class PointController extends BaseController
 		Session();
 		
 		$data = [
-			'title' => 'Leaflet CRUD',
+			'title' => 'Edit Point',
 			'page' => 'edit-point',
 			'id' => $id,
 		];

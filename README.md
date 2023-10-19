@@ -33,7 +33,7 @@
 4. Enable and change database configuration
 5. Open terminal
 6. Run ```composer install```
-7. Run ```php spark migrate --all```
+7. Run ```php spark migrate```
 8. Run ```php spark serve```
 9. Open in a browser with the URL http://localhost:8080
 
