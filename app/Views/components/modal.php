@@ -34,7 +34,7 @@
 
         <div class="row">
           <div class="col text-end">
-            <small class="text-secondary">unsorry@2023</small>
+            <small><a href="https://unsorry.net" target="_blank" class="text-decoration-none text-secondary">unsorry@2023</a></small>
           </div>
         </div>
       </div>
