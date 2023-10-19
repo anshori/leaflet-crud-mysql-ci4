@@ -53,7 +53,7 @@
       position: 'topleft',
       polyline: true,
       polygon: true,
-      rectangle: false,
+      rectangle: true,
       circle: false,
       marker: true,
       circlemarker: false
@@ -66,6 +66,8 @@
   map.on('draw:created', function(e) {
     var type = e.layerType,
       layer = e.layer;
+
+      console.log(type);
 
     var drawnJSONObject = layer.toGeoJSON();
     var objectGeometry = Terraformer.WKT.convert(drawnJSONObject.geometry);
@@ -80,7 +82,7 @@
       $('#createpolylineModal').on('hidden.bs.modal', function() {
         location.reload();
       });
-    } else if (type === 'polygon') {
+    } else if (type === 'polygon' || type === 'rectangle') {
       $('#geometry-polygon').empty();
       console.log(objectGeometry);
       $('#geometry-polygon').val(objectGeometry);
