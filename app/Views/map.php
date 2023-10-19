@@ -26,7 +26,7 @@
 <script src="https://unpkg.com/terraformer-wkt-parser@1.1.2/terraformer-wkt-parser.js"></script>
 <script>
   // init map
-  var map = L.map('map').setView([-7.7956, 110.3695], 10);
+  var map = L.map('map').setView([-7.7911905,110.3708839], 14);
 
   // init basemap
   var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -133,8 +133,6 @@
   $.getJSON("<?= base_url('geojson-points') ?>", function(data) {
     point.addData(data);
     map.addLayer(point);
-    // fit map to geojson
-    map.fitBounds(point.getBounds());
   });
 
   /* GeoJSON Polyline */
@@ -192,5 +190,14 @@
     polygon.addData(data);
     map.addLayer(polygon);
   });
+
+  // layer control
+  var layers = {
+    "Point": point,
+    "Polyline": polyline,
+    "Polygon": polygon,
+  };
+
+  L.control.layers(null, layers, {collapsed: false}).addTo(map);
 </script>
 <?php $this->endSection(); ?>

@@ -1,5 +1,17 @@
 # Leaflet CRUD MySQL CodeIgniter 4
 
+## Features
+1. Map view with points, polylines, polygons layer
+2. Create point with the name attribute
+3. Edit the name attribute and geometry point 
+4. Delete point
+5. Create polyline with the name attribute
+6. Edit the name attribute and geometry polyline 
+7. Delete polyline
+8. Create polygon with the name attribute
+9. Edit the name attribute and geometry polygon 
+10. Delete polygon
+
 ## Stack
 1. PHP Framework CodeIgniter 4 (built with version 4.4.1)
 2. Database MySQL (version 5.1 and above)

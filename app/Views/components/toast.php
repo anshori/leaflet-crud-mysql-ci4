@@ -1,7 +1,7 @@
 <?php
 if (session()->getFlashdata('success')) :
 ?>
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1000; margin-top: 55px;">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1000; margin-bottom: 20px;">
   <div id="liveToastSuccess" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">
@@ -20,7 +20,7 @@ if (session()->getFlashdata('success')) :
 <?php
 elseif (session()->getFlashdata('error')) :
 ?>
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1000; margin-top: 55px;">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1000; margin-bottom: 20px;">
   <div id="liveToastError" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body">

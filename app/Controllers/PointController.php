@@ -6,144 +6,160 @@ use App\Models\PointModel;
 
 class PointController extends BaseController
 {
-    public function __construct()
-    {
-        $this->db = \Config\Database::connect();
-        $this->points = new PointModel();
-    }
-    /**
-     * Return an array of resource objects, themselves in array format
-     *
-     * @return mixed
-     */
-    public function index()
-    {
-        //
-    }
+	public function __construct()
+	{
+		$this->db = \Config\Database::connect();
+		$this->points = new PointModel();
+	}
+	/**
+	 * Return an array of resource objects, themselves in array format
+	 *
+	 * @return mixed
+	 */
+	public function index()
+	{
+		//
+	}
 
-    /**
-     * Return the properties of a resource object
-     *
-     * @return mixed
-     */
-    public function show($id = null)
-    {
-        //
-    }
+	/**
+	 * Return the properties of a resource object
+	 *
+	 * @return mixed
+	 */
+	public function show($id = null)
+	{
+		//
+	}
 
-    /**
-     * Return a new resource object, with default properties
-     *
-     * @return mixed
-     */
-    public function new()
-    {
-        //
-    }
+	/**
+	 * Return a new resource object, with default properties
+	 *
+	 * @return mixed
+	 */
+	public function new()
+	{
+		//
+	}
 
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-    public function create()
-    {
-        // timezone set to Asia/Jakarta
-        date_default_timezone_set('Asia/Jakarta');
+	/**
+	 * Create a new resource object, from "posted" parameters
+	 *
+	 * @return mixed
+	 */
+	public function create()
+	{
+		// timezone set to Asia/Jakarta
+		date_default_timezone_set('Asia/Jakarta');
 
-        $sqlquery = "INSERT INTO points (geom, name, created_at, updated_at)
-            VALUES (ST_GeomFromText('" . $this->request->getPost('geometry-point') . "'), '" . $this->request->getPost('name') . "', '" . date('Y-m-d H:i:s') . "', '" . date('Y-m-d H:i:s') . "')";
+		$sqlquery = "INSERT INTO points (geom, name, created_at, updated_at)
+			VALUES (ST_GeomFromText('" . $this->request->getPost('geometry-point') . "'), '" . $this->request->getPost('name') . "', '" . date('Y-m-d H:i:s') . "', '" . date('Y-m-d H:i:s') . "')";
 
-        if(!$this->db->query($sqlquery)){
-            return redirect()->to('/')->with('error', 'Failed to add point');
-        }
+		if(!$this->db->query($sqlquery)){
+			return redirect()->to('/')->with('error', 'Failed to add point');
+		}
 
-        return redirect()->to('/')->with('success', 'Point added successfully');
-    }
+		return redirect()->to('/')->with('success', 'Point added successfully');
+	}
 
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
-        //
-    }
+	/**
+	 * Return the editable properties of a resource object
+	 *
+	 * @return mixed
+	 */
+	public function edit($id = null)
+	{
+		Session();
+		
+		$data = [
+			'title' => 'Leaflet CRUD',
+			'page' => 'edit-point',
+			'id' => $id,
+		];
+		return view('edit-point', $data);
+	}
 
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-    public function update($id = null)
-    {
-        //
-    }
+	/**
+	 * Add or update a model resource, from "posted" properties
+	 *
+	 * @return mixed
+	 */
+	public function update($id = null)
+	{
+		// timezone set to Asia/Jakarta
+		date_default_timezone_set('Asia/Jakarta');
 
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
-    public function delete($id = null)
-    {
-        if(!$this->points->delete($id)) {
-            return redirect()->to('/')->with('error', 'Failed to delete point');
-        }
+		$sqlquery = "UPDATE points SET geom = ST_GeomFromText('" . $this->request->getPost('geometry-edit-point') . "'), name = '" .$this->request->getPost('name-edit-point') . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $id;
 
-        return redirect()->to('/')->with('success', 'Point deleted successfully');
-    }
+		if(!$this->db->query($sqlquery)){
+			return redirect()->to('/')->with('error', 'Failed to update point');
+		}
 
-    public function geojson()
-    {
-        $points = $this->points->getPoints();
+		return redirect()->to('/')->with('success', 'Point updated successfully');
+	}
 
-        $geojson = [
-            'type' => 'FeatureCollection',
-            'features' => [],
-        ];
-        foreach ($points as $row) {
-            $feature = [
-                'type' => 'Feature',
-                'properties' => $row,
-                'geometry' => json_decode($row['geom']),
-            ];
-            // make hidden geom
-            unset($feature['properties']['geom']);
+	/**
+	 * Delete the designated resource object from the model
+	 *
+	 * @return mixed
+	 */
+	public function delete($id = null)
+	{
+		if(!$this->points->delete($id)) {
+			return redirect()->to('/')->with('error', 'Failed to delete point');
+		}
 
-            array_push($geojson['features'], $feature);
-        }
+		return redirect()->to('/')->with('success', 'Point deleted successfully');
+	}
 
-        // json numeric check
-        $geojson = json_encode($geojson, JSON_NUMERIC_CHECK);
+	public function geojson()
+	{
+		$points = $this->points->getPoints();
 
-        return $this->response->setJSON($geojson);
-    }
+		$geojson = [
+			'type' => 'FeatureCollection',
+			'features' => [],
+		];
+		foreach ($points as $row) {
+			$feature = [
+				'type' => 'Feature',
+				'properties' => $row,
+				'geometry' => json_decode($row['geom']),
+			];
+			// make hidden geom
+			unset($feature['properties']['geom']);
 
-    public function geojsonpoint($id)
-    {
-        $points = $this->points->getPoint($id);
+			array_push($geojson['features'], $feature);
+		}
 
-        $geojson = [
-            'type' => 'FeatureCollection',
-            'features' => [],
-        ];
-        foreach ($points as $row) {
-            $feature = [
-                'type' => 'Feature',
-                'properties' => $row,
-                'geometry' => json_decode($row['geom']),
-            ];
-            // make hidden geom
-            unset($feature['properties']['geom']);
+		// json numeric check
+		$geojson = json_encode($geojson, JSON_NUMERIC_CHECK);
 
-            array_push($geojson['features'], $feature);
-        }
+		return $this->response->setJSON($geojson);
+	}
 
-        // json numeric check
-        $geojson = json_encode($geojson, JSON_NUMERIC_CHECK);
+	public function geojsonpoint($id)
+	{
+		$points = $this->points->getPoint($id);
 
-        return $this->response->setJSON($geojson);
-    }
+		$geojson = [
+			'type' => 'FeatureCollection',
+			'features' => [],
+		];
+		foreach ($points as $row) {
+			$feature = [
+				'type' => 'Feature',
+				'properties' => $row,
+				'geometry' => json_decode($row['geom']),
+			];
+			// make hidden geom
+			unset($feature['properties']['geom']);
+
+			array_push($geojson['features'], $feature);
+		}
+
+		// json numeric check
+		$geojson = json_encode($geojson, JSON_NUMERIC_CHECK);
+
+		return $this->response->setJSON($geojson);
+	}
 }
