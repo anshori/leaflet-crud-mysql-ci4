@@ -1,5 +1,9 @@
 # Leaflet CRUD MySQL CodeIgniter 4
 
+![pic1](public/screenshots/pic1.png)
+
+![pic2](public/screenshots/pic2.png)
+
 ## Features
 1. Map view with points, polylines, polygons layer
 2. Create point with the name attribute
